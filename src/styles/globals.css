@@ -2,17 +2,29 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@keyframes breathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
+  .no-scrollbar::-webkit-scrollbar,
+  .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
 
-  .no-scrollbar::-webkit-scrollbar-track {
+  .no-scrollbar::-webkit-scrollbar-track,
+  .scrollbar-hide::-webkit-scrollbar-track {
     background-color: transparent;
   }
 
-  .no-scrollbar {
+  .no-scrollbar,
+  .scrollbar-hide {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
@@ -108,5 +120,9 @@
 
   .text-3xl-semi {
     @apply text-[32px] leading-[44px] font-semibold;
+  }
+
+  .logo-breathing {
+    animation: breathing 3s ease-in-out infinite;
   }
 }

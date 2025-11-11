@@ -151,45 +151,44 @@ const Shipping: React.FC<ShippingProps> = ({
   return (
     <div className="bg-white">
       <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
+        <h2
           className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
+            "flex flex-row text-2xl font-bold text-gray-900 gap-x-2 items-baseline",
             {
               "opacity-50 pointer-events-none select-none":
                 !isOpen && cart.shipping_methods?.length === 0,
             }
           )}
         >
-          Delivery
+          Teslimat
           {!isOpen && (cart.shipping_methods?.length ?? 0) > 0 && (
             <CheckCircleSolid />
           )}
-        </Heading>
+        </h2>
         {!isOpen &&
           cart?.shipping_address &&
           cart?.billing_address &&
           cart?.email && (
-            <Text>
+            <span className="text-base">
               <button
                 onClick={handleEdit}
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+                className="text-[#9865e8] hover:text-[#7d4fd1] font-medium transition-colors"
                 data-testid="edit-delivery-button"
               >
-                Edit
+                Düzenle
               </button>
-            </Text>
+            </span>
           )}
       </div>
       {isOpen ? (
         <>
           <div className="grid">
             <div className="flex flex-col">
-              <span className="font-medium txt-medium text-ui-fg-base">
-                Shipping method
+              <span className="font-medium text-base text-gray-900">
+                Kargo Yöntemi
               </span>
-              <span className="mb-4 text-ui-fg-muted txt-medium">
-                How would you like you order delivered
+              <span className="mb-4 text-gray-600 text-sm">
+                Siparişinizin nasıl teslim edilmesini istersiniz?
               </span>
             </div>
             <div data-testid="delivery-options-container">
@@ -223,7 +222,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           checked={showPickupOptions === PICKUP_OPTION_ON}
                         />
                         <span className="text-base-regular">
-                          Pick up your order
+                          Siparişinizi mağazadan teslim alın
                         </span>
                       </div>
                       <span className="justify-self-end text-ui-fg-base">
@@ -298,11 +297,11 @@ const Shipping: React.FC<ShippingProps> = ({
           {showPickupOptions === PICKUP_OPTION_ON && (
             <div className="grid">
               <div className="flex flex-col">
-                <span className="font-medium txt-medium text-ui-fg-base">
-                  Store
+                <span className="font-medium text-base text-gray-900">
+                  Mağaza
                 </span>
-                <span className="mb-4 text-ui-fg-muted txt-medium">
-                  Choose a store near you
+                <span className="mb-4 text-gray-600 text-sm">
+                  Size yakın bir mağaza seçin
                 </span>
               </div>
               <div data-testid="delivery-options-container">
@@ -368,33 +367,35 @@ const Shipping: React.FC<ShippingProps> = ({
               error={error}
               data-testid="delivery-option-error-message"
             />
-            <Button
-              size="large"
-              className="mt"
+            <button
               onClick={handleSubmit}
-              isLoading={isLoading}
-              disabled={!cart.shipping_methods?.[0]}
+              disabled={!cart.shipping_methods?.[0] || isLoading}
+              className="w-full px-6 py-3 bg-[#9865e8] text-white font-semibold rounded-lg mt-6
+                         transition-all duration-300 ease-in-out
+                         hover:bg-[#7d4fd1] hover:shadow-lg hover:scale-105
+                         active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+                         disabled:hover:scale-100"
               data-testid="submit-delivery-option-button"
             >
-              Continue to payment
-            </Button>
+              {isLoading ? "İşleniyor..." : "Ödemeye Devam Et"}
+            </button>
           </div>
         </>
       ) : (
         <div>
-          <div className="text-small-regular">
+          <div className="text-sm">
             {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
               <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Method
-                </Text>
-                <Text className="txt-medium text-ui-fg-subtle">
+                <p className="text-base font-medium text-gray-900 mb-1">
+                  Yöntem
+                </p>
+                <p className="text-sm text-gray-600">
                   {cart.shipping_methods!.at(-1)!.name}{" "}
                   {convertToLocale({
                     amount: cart.shipping_methods!.at(-1)!.amount!,
                     currency_code: cart?.currency_code,
                   })}
-                </Text>
+                </p>
               </div>
             )}
           </div>

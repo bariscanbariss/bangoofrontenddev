@@ -4,12 +4,30 @@ import { useActionState } from "react"
 import Input from "@modules/common/components/input"
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import ErrorMessage from "@modules/checkout/components/error-message"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { signup } from "@lib/data/customer"
+import { useFormStatus } from "react-dom"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
+}
+
+const SubmitButtonWithStyle = ({ children }: { children: React.ReactNode }) => {
+  const { pending } = useFormStatus()
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full mt-6 px-6 py-3 bg-[#9865e8] text-white font-semibold rounded-lg
+                 transition-all duration-300 ease-in-out
+                 hover:bg-[#7d4fd1] hover:shadow-lg hover:scale-105
+                 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+                 disabled:hover:scale-100"
+    >
+      {pending ? "İşleniyor..." : children}
+    </button>
+  )
 }
 
 const Register = ({ setCurrentView }: Props) => {
@@ -17,34 +35,33 @@ const Register = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm flex flex-col items-center"
+      className="max-w-md w-full flex flex-col items-center px-4"
       data-testid="register-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">
-        Become a Medusa Store Member
+      <h1 className="text-3xl font-bold text-[#9865e8] mb-4">
+        Bangoo'ya Hoş Geldiniz
       </h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-4">
-        Create your Medusa Store Member profile, and get access to an enhanced
-        shopping experience.
+      <p className="text-center text-base text-gray-600 mb-8">
+        Bangoo üyesi olun, özel kampanyalardan ve avantajlı fiyatlardan yararlanın.
       </p>
       <form className="w-full flex flex-col" action={formAction}>
-        <div className="flex flex-col w-full gap-y-2">
+        <div className="flex flex-col w-full gap-y-4">
           <Input
-            label="First name"
+            label="Ad"
             name="first_name"
             required
             autoComplete="given-name"
             data-testid="first-name-input"
           />
           <Input
-            label="Last name"
+            label="Soyad"
             name="last_name"
             required
             autoComplete="family-name"
             data-testid="last-name-input"
           />
           <Input
-            label="Email"
+            label="E-posta"
             name="email"
             required
             type="email"
@@ -52,14 +69,14 @@ const Register = ({ setCurrentView }: Props) => {
             data-testid="email-input"
           />
           <Input
-            label="Phone"
+            label="Telefon"
             name="phone"
             type="tel"
             autoComplete="tel"
             data-testid="phone-input"
           />
           <Input
-            label="Password"
+            label="Şifre"
             name="password"
             required
             type="password"
@@ -68,36 +85,35 @@ const Register = ({ setCurrentView }: Props) => {
           />
         </div>
         <ErrorMessage error={message} data-testid="register-error" />
-        <span className="text-center text-ui-fg-base text-small-regular mt-6">
-          By creating an account, you agree to Medusa Store&apos;s{" "}
+        <span className="text-center text-gray-500 text-sm mt-6">
+          Hesap oluşturarak Bangoo&apos;nun{" "}
           <LocalizedClientLink
             href="/content/privacy-policy"
-            className="underline"
+            className="text-[#9865e8] hover:text-[#7d4fd1] underline transition-colors"
           >
-            Privacy Policy
+            Gizlilik Politikası
           </LocalizedClientLink>{" "}
-          and{" "}
+          ve{" "}
           <LocalizedClientLink
             href="/content/terms-of-use"
-            className="underline"
+            className="text-[#9865e8] hover:text-[#7d4fd1] underline transition-colors"
           >
-            Terms of Use
+            Kullanım Koşulları
           </LocalizedClientLink>
-          .
+          &apos;nı kabul etmiş olursunuz.
         </span>
-        <SubmitButton className="w-full mt-6" data-testid="register-button">
-          Join
-        </SubmitButton>
+        <SubmitButtonWithStyle>
+          Kayıt Ol
+        </SubmitButtonWithStyle>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
-        Already a member?{" "}
+      <span className="text-center text-gray-600 text-sm mt-6">
+        Zaten üye misiniz?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
-          className="underline"
+          className="text-[#9865e8] hover:text-[#7d4fd1] underline font-semibold transition-colors"
         >
-          Sign in
+          Giriş Yapın
         </button>
-        .
       </span>
     </div>
   )

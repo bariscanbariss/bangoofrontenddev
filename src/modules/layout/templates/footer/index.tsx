@@ -1,148 +1,174 @@
-import { listCategories } from "@lib/data/categories"
-import { listCollections } from "@lib/data/collections"
-import { Text, clx } from "@medusajs/ui"
-
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import StoreCTA from "@modules/layout/components/medusa-cta"
+import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
+import Image from "next/image"
 
 export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  })
-  const productCategories = await listCategories()
-
   return (
-    <footer className="border-t border-ui-border-base w-full">
+    <footer className="border-t border-gray-200 w-full bg-white">
       <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
+        {/* Logo */}
+        <div className="py-8 border-b border-gray-200">
+          <LocalizedClientLink
+            href="/"
+            className="inline-block hover:opacity-80 transition-opacity"
+            aria-label="Bangoo Ana Sayfa"
+          >
+            <div className="text-[#9865e8]" style={{ color: '#9865e8' }}>
+              <Image
+                src="/logo.svg"
+                alt="Bangoo - Türkiye'nin Online Alışveriş Platformu"
+                width={320}
+                height={96}
+                className="h-20 w-auto sm:h-24 md:h-28 lg:h-32"
+                style={{
+                  filter: 'brightness(0) saturate(100%) invert(47%) sepia(65%) saturate(1829%) hue-rotate(234deg) brightness(93%) contrast(91%)'
+                }}
+              />
+            </div>
+          </LocalizedClientLink>
+        </div>
+
+        {/* Menu Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 py-12">
+          {/* Biz Kimiz Section */}
+          <div className="flex flex-col gap-y-3">
+            <h3 className="text-[#9865e8] font-semibold mb-2">Kurumsal</h3>
             <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+              href="/biz-kimiz"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
             >
-              Online Store
+              Biz Kimiz
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/kariyer"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Kariyer
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/surdurulebilirlik"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Sürdürülebilirlik
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/iletisim"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              İletişim
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/bangoo-guvenlik"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Bangoo'da Güvenlik
             </LocalizedClientLink>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return
-                    }
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null
+          {/* Kampanya Section */}
+          <div className="flex flex-col gap-y-3">
+            <h3 className="text-[#9865e8] font-semibold mb-2">Kampanya</h3>
+            <LocalizedClientLink
+              href="/kampanyalar"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Kampanyalar
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/elit-uyelik"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Elit Üyelik
+            </LocalizedClientLink>
+          </div>
 
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
-                >
-                  {collections?.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Platform</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-ui-fg-base"
-                  >
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Support
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Contact
-                  </a>
-                </li>
-              </ul>
+          {/* Satıcı Section */}
+          <div className="flex flex-col gap-y-3">
+            <h3 className="text-[#9865e8] font-semibold mb-2">Satıcı</h3>
+            <LocalizedClientLink
+              href="/satici/bangoo-da-satis-yap"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Bangoo'da Satış Yap
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/satici/temel-kavramlar"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Temel Kavramlar
+            </LocalizedClientLink>
+          </div>
+
+          {/* Yardım Section */}
+          <div className="flex flex-col gap-y-3">
+            <h3 className="text-[#9865e8] font-semibold mb-2">Yardım</h3>
+            <LocalizedClientLink
+              href="/yardim/sss"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Sıkça Sorulan Sorular
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/yardim/canli-yardim"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Canlı Yardım / Asistan
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/yardim/nasil-iade-ederim"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              Nasıl İade Edebilirim
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/yardim/islem-rehberi"
+              className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors text-sm"
+            >
+              İşlem Rehberi
+            </LocalizedClientLink>
+          </div>
+
+          {/* Sosyal Medya */}
+          <div className="flex flex-col gap-y-3">
+            <h3 className="text-[#9865e8] font-semibold mb-2">Bizi Takip Edin</h3>
+            <div className="flex gap-4">
+              <a
+                href="#"
+                className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="w-6 h-6" />
+              </a>
+              <a
+                href="#"
+                className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter className="w-6 h-6" />
+              </a>
+              <a
+                href="#"
+                className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-6 h-6" />
+              </a>
+              <a
+                href="#"
+                className="text-[#9865e8] hover:text-[#7a4dc7] transition-colors"
+                aria-label="Youtube"
+              >
+                <Youtube className="w-6 h-6" />
+              </a>
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Online Store. All rights reserved.
-          </Text>
+
+        {/* Copyright */}
+        <div className="flex w-full py-6 border-t border-gray-200 justify-between text-[#9865e8]">
+          <p className="text-sm">
+            © {new Date().getFullYear()} Bangoo. Tüm hakları saklıdır.
+          </p>
         </div>
       </div>
     </footer>

@@ -134,3 +134,43 @@ export const listProductsWithSort = async ({
     queryParams,
   }
 }
+
+/**
+ * Fetches one product from each category for featured/popular display
+ */
+export const getProductsFromCategories = async ({
+  regionId,
+  categoryIds,
+}: {
+  regionId: string
+  categoryIds: string[]
+}): Promise<HttpTypes.StoreProduct[]> => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const next = {
+    ...(await getCacheOptions("products")),
+  }
+
+  const productPromises = categoryIds.map((categoryId) =>
+    sdk.client
+      .fetch<{ products: HttpTypes.StoreProduct[] }>(`/store/products`, {
+        method: "GET",
+        query: {
+          limit: 1,
+          region_id: regionId,
+          category_id: [categoryId],
+          fields: "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
+        },
+        headers,
+        next,
+        cache: "force-cache",
+      })
+      .then(({ products }) => products[0])
+      .catch(() => null)
+  )
+
+  const products = await Promise.all(productPromises)
+  return products.filter((product) => product !== null) as HttpTypes.StoreProduct[]
+}

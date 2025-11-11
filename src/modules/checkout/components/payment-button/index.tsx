@@ -3,7 +3,6 @@
 import { isManual, isStripe } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
-import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
@@ -40,7 +39,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return (
+        <button
+          disabled
+          className="w-full px-6 py-3 bg-gray-300 text-gray-500 font-semibold rounded-lg cursor-not-allowed"
+        >
+          Ödeme yöntemi seçin
+        </button>
+      )
   }
 }
 
@@ -134,15 +140,18 @@ const StripePaymentButton = ({
 
   return (
     <>
-      <Button
+      <button
         disabled={disabled || notReady}
         onClick={handlePayment}
-        size="large"
-        isLoading={submitting}
+        className={`w-full px-6 py-3 font-semibold rounded-lg transition-all duration-300 ease-in-out
+                   ${disabled || notReady
+                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                     : 'bg-[#9865e8] text-white hover:bg-[#7d4fd1] hover:shadow-lg hover:scale-105 active:scale-95'
+                   }`}
         data-testid={dataTestId}
       >
-        Place order
-      </Button>
+        {submitting ? "Sipariş veriliyor..." : "Siparişi Tamamla"}
+      </button>
       <ErrorMessage
         error={errorMessage}
         data-testid="stripe-payment-error-message"
@@ -173,15 +182,18 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
 
   return (
     <>
-      <Button
+      <button
         disabled={notReady}
-        isLoading={submitting}
         onClick={handlePayment}
-        size="large"
+        className={`w-full px-6 py-3 font-semibold rounded-lg transition-all duration-300 ease-in-out
+                   ${notReady
+                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                     : 'bg-[#9865e8] text-white hover:bg-[#7d4fd1] hover:shadow-lg hover:scale-105 active:scale-95'
+                   }`}
         data-testid="submit-order-button"
       >
-        Place order
-      </Button>
+        {submitting ? "Sipariş veriliyor..." : "Siparişi Tamamla"}
+      </button>
       <ErrorMessage
         error={errorMessage}
         data-testid="manual-payment-error-message"

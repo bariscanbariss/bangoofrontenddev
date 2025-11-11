@@ -13,6 +13,9 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
  */
 const nextConfig = {
   reactStrictMode: true,
+  turbopack: {
+    root: __dirname,
+  },
   logging: {
     fetches: {
       fullUrl: true,

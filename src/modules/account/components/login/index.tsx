@@ -1,12 +1,30 @@
 import { login } from "@lib/data/customer"
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import ErrorMessage from "@modules/checkout/components/error-message"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
 import Input from "@modules/common/components/input"
 import { useActionState } from "react"
+import { useFormStatus } from "react-dom"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
+}
+
+const SubmitButtonWithStyle = ({ children }: { children: React.ReactNode }) => {
+  const { pending } = useFormStatus()
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full mt-6 px-6 py-3 bg-[#9865e8] text-white font-semibold rounded-lg
+                 transition-all duration-300 ease-in-out
+                 hover:bg-[#7d4fd1] hover:shadow-lg hover:scale-105
+                 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+                 disabled:hover:scale-100"
+    >
+      {pending ? "Giriş yapılıyor..." : children}
+    </button>
+  )
 }
 
 const Login = ({ setCurrentView }: Props) => {
@@ -14,26 +32,26 @@ const Login = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm w-full flex flex-col items-center"
+      className="max-w-md w-full flex flex-col items-center px-4"
       data-testid="login-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">Welcome back</h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-8">
-        Sign in to access an enhanced shopping experience.
+      <h1 className="text-3xl font-bold text-[#9865e8] mb-4">Tekrar Hoş Geldiniz</h1>
+      <p className="text-center text-base text-gray-600 mb-8">
+        Hesabınıza giriş yaparak alışverişe devam edin.
       </p>
       <form className="w-full" action={formAction}>
-        <div className="flex flex-col w-full gap-y-2">
+        <div className="flex flex-col w-full gap-y-4">
           <Input
-            label="Email"
+            label="E-posta"
             name="email"
             type="email"
-            title="Enter a valid email address."
+            title="Geçerli bir e-posta adresi girin."
             autoComplete="email"
             required
             data-testid="email-input"
           />
           <Input
-            label="Password"
+            label="Şifre"
             name="password"
             type="password"
             autoComplete="current-password"
@@ -42,20 +60,19 @@ const Login = ({ setCurrentView }: Props) => {
           />
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
-        <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
-          Sign in
-        </SubmitButton>
+        <SubmitButtonWithStyle>
+          Giriş Yap
+        </SubmitButtonWithStyle>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
-        Not a member?{" "}
+      <span className="text-center text-gray-600 text-sm mt-6">
+        Henüz üye değil misiniz?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-          className="underline"
+          className="text-[#9865e8] hover:text-[#7d4fd1] underline font-semibold transition-colors"
           data-testid="register-button"
         >
-          Join us
+          Kayıt Olun
         </button>
-        .
       </span>
     </div>
   )

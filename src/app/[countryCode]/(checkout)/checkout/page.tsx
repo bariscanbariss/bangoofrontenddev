@@ -7,7 +7,8 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: "Checkout",
+  title: "Ödeme | Bangoo",
+  description: "Siparişinizi tamamlayın",
 }
 
 export default async function Checkout() {
