@@ -19,16 +19,16 @@ export default function CategoriesClient({ categories }: { categories: Category[
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
 
   return (
-    <div className="border-b border-gray-200 bg-white">
+    <nav className="border-b border-gray-200 bg-white overflow-hidden" aria-label="Kategoriler">
       <div className="content-container">
-        <div className="flex items-center gap-1 py-2 overflow-x-auto">
+        <div className="flex items-center gap-1 py-2 overflow-x-auto scrollbar-hide">
           {/* Tümü Button */}
           <div
-            className="relative"
+            className="relative flex-shrink-0"
             onMouseEnter={() => setHoveredCategory("all")}
             onMouseLeave={() => setHoveredCategory(null)}
           >
-            <button className="px-4 py-2 text-[#9865e8] hover:bg-purple-50 rounded-md transition-colors whitespace-nowrap font-medium">
+            <button className="px-3 sm:px-4 py-1.5 sm:py-2 text-[#9865e8] hover:bg-purple-50 rounded-md transition-colors whitespace-nowrap font-medium text-sm sm:text-base">
               Tümü
             </button>
 
@@ -39,7 +39,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                     <LocalizedClientLink
                       key={category.id}
                       href={`/categories/${category.handle}`}
-                      className="block px-4 py-2 text-[#9865e8] hover:bg-purple-50 transition-colors"
+                      className="block px-4 py-2 text-[#9865e8] hover:bg-purple-50 transition-colors text-sm"
                     >
                       {category.name}
                     </LocalizedClientLink>
@@ -53,13 +53,13 @@ export default function CategoriesClient({ categories }: { categories: Category[
           {categories.slice(0, 8).map((category) => (
             <div
               key={category.id}
-              className="relative"
+              className="relative flex-shrink-0"
               onMouseEnter={() => setHoveredCategory(category.id)}
               onMouseLeave={() => setHoveredCategory(null)}
             >
               <LocalizedClientLink
                 href={`/categories/${category.handle}`}
-                className="block px-4 py-2 text-[#9865e8] hover:bg-purple-50 rounded-md transition-colors whitespace-nowrap"
+                className="block px-3 sm:px-4 py-1.5 sm:py-2 text-[#9865e8] hover:bg-purple-50 rounded-md transition-colors whitespace-nowrap text-sm sm:text-base"
               >
                 {category.name}
               </LocalizedClientLink>
@@ -72,7 +72,7 @@ export default function CategoriesClient({ categories }: { categories: Category[
                       <LocalizedClientLink
                         key={subCat.id}
                         href={`/categories/${subCat.handle}`}
-                        className="flex items-center justify-between px-4 py-2 text-[#9865e8] hover:bg-purple-50 transition-colors"
+                        className="flex items-center justify-between px-4 py-2 text-[#9865e8] hover:bg-purple-50 transition-colors text-sm"
                       >
                         <span>{subCat.name}</span>
                         <ChevronRight className="w-4 h-4" />
@@ -85,6 +85,6 @@ export default function CategoriesClient({ categories }: { categories: Category[
           ))}
         </div>
       </div>
-    </div>
+    </nav>
   )
 }

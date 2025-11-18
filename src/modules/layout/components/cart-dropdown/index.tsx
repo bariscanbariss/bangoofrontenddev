@@ -86,9 +86,10 @@ const CartDropdown = ({
             className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap text-white"
             href="/cart"
             data-testid="nav-cart-link"
+            aria-label="Sepetim"
           >
-            <ShoppingCart className="w-5 h-5" />
-            <span className="hidden md:inline">Sepetim ({totalItems})</span>
+            <ShoppingCart className="w-5 h-5 lg:w-5 lg:h-5" />
+            <span className="hidden lg:inline text-sm">Sepetim ({totalItems})</span>
           </LocalizedClientLink>
         </PopoverButton>
         <Transition

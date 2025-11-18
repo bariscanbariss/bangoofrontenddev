@@ -1,6 +1,14 @@
 import { getBaseURL } from "@lib/util/env"
-import { Metadata } from "next"
+import { Metadata, Viewport } from "next"
 import "styles/globals.css"
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#9865e8',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -9,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Bangoo"
   },
   description: "Bangoo'da güvenli alışverişin keyfini çıkarın. Teknoloji, moda, ev, elektronik ve daha fazla kategoride milyonlarca ürün sizi bekliyor. Ücretsiz kargo fırsatlarını kaçırmayın!",
-  keywords: ["online alışveriş", "e-ticaret", "bangoo", "alışveriş sitesi", "türkiye", "elektronik", "moda", "teknoloji"],
+  keywords: ["online alışveriş", "e-ticaret", "bangoo", "alışveriş sitesi", "türkiye", "elektronik", "moda", "teknoloji", "güvenli alışveriş", "ücretsiz kargo"],
   authors: [{ name: "Bangoo" }],
   creator: "Bangoo",
   publisher: "Bangoo",
@@ -42,11 +50,23 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: '',
+    yandex: '',
+  },
+  alternates: {
+    canonical: getBaseURL(),
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="tr" data-mode="light">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body>
         <main className="relative">{props.children}</main>
       </body>

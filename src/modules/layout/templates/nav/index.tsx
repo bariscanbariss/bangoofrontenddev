@@ -11,66 +11,136 @@ export default async function Nav() {
   return (
     <div className="sticky top-0 inset-x-0 z-50">
       {/* Main Navbar */}
-      <header className="relative h-20 md:h-24 mx-auto bg-[#9865e8] text-white">
-        <nav className="content-container flex items-center justify-between w-full h-full px-4">
-          {/* Logo */}
-          <div className="flex items-center min-w-[200px] sm:min-w-[240px] md:min-w-[280px]">
-            <LocalizedClientLink
-              href="/"
-              className="flex items-center hover:opacity-80 transition-opacity"
-              data-testid="nav-store-link"
-              aria-label="Bangoo Ana Sayfa"
-            >
-              <Image
-                src="/logo.svg"
-                alt="Bangoo - Türkiye'nin Online Alışveriş Sitesi"
-                width={280}
-                height={80}
-                className="h-14 w-auto sm:h-16 md:h-18 lg:h-20 max-w-full"
-                priority
-              />
-            </LocalizedClientLink>
-          </div>
+      <header className="relative mx-auto bg-[#9865e8] text-white overflow-hidden">
+        <div className="content-container">
+          {/* Desktop Layout: Logo, Search, Icons in one row */}
+          <nav className="hidden lg:flex items-center justify-between w-full h-24 gap-4">
+            {/* Logo */}
+            <div className="flex items-center flex-shrink-0">
+              <LocalizedClientLink
+                href="/"
+                className="flex items-center hover:opacity-80 transition-opacity"
+                data-testid="nav-store-link"
+                aria-label="Bangoo Ana Sayfa"
+              >
+                <Image
+                  src="/logo.svg"
+                  alt="Bangoo - Türkiye'nin Online Alışveriş Sitesi"
+                  width={280}
+                  height={80}
+                  className="h-20 w-auto"
+                  priority
+                />
+              </LocalizedClientLink>
+            </div>
 
-          {/* Search Bar */}
-          <SearchBar />
+            {/* Search Bar */}
+            <SearchBar />
 
-          {/* Right Side: Login, Favorites, Cart */}
-          <div className="flex items-center gap-6">
-            <LocalizedClientLink
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap"
-              href="/account"
-              data-testid="nav-account-link"
-            >
-              <User className="w-5 h-5" />
-              <span className="hidden md:inline">Giriş Yap</span>
-            </LocalizedClientLink>
+            {/* Right Side: Login, Favorites, Cart */}
+            <div className="flex items-center gap-6 flex-shrink-0">
+              <LocalizedClientLink
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap"
+                href="/account"
+                data-testid="nav-account-link"
+                aria-label="Hesabım"
+              >
+                <User className="w-5 h-5" />
+                <span className="text-sm">Giriş Yap</span>
+              </LocalizedClientLink>
 
-            <LocalizedClientLink
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap"
-              href="/account/favorites"
-              data-testid="nav-favorites-link"
-            >
-              <Heart className="w-5 h-5" />
-              <span className="hidden md:inline">Favorilerim</span>
-            </LocalizedClientLink>
+              <LocalizedClientLink
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap"
+                href="/account/favorites"
+                data-testid="nav-favorites-link"
+                aria-label="Favorilerim"
+              >
+                <Heart className="w-5 h-5" />
+                <span className="text-sm">Favorilerim</span>
+              </LocalizedClientLink>
 
-            <Suspense
-              fallback={
+              <Suspense
+                fallback={
+                  <LocalizedClientLink
+                    className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap"
+                    href="/cart"
+                    data-testid="nav-cart-link"
+                    aria-label="Sepetim"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    <span className="text-sm">Sepetim</span>
+                  </LocalizedClientLink>
+                }
+              >
+                <CartButton />
+              </Suspense>
+            </div>
+          </nav>
+
+          {/* Mobile & Tablet Layout: Trendyol style */}
+          <div className="lg:hidden">
+            {/* Top Row: Logo and Icons */}
+            <div className="flex items-center justify-between py-3">
+              {/* Logo - 7rem height for mobile/tablet */}
+              <LocalizedClientLink
+                href="/"
+                className="flex items-center hover:opacity-80 transition-opacity"
+                data-testid="nav-store-link"
+                aria-label="Bangoo Ana Sayfa"
+              >
+                <Image
+                  src="/logo.svg"
+                  alt="Bangoo - Türkiye'nin Online Alışveriş Sitesi"
+                  width={280}
+                  height={80}
+                  className="h-28 w-auto"
+                  priority
+                />
+              </LocalizedClientLink>
+
+              {/* Icons - Right aligned */}
+              <div className="flex items-center gap-5">
                 <LocalizedClientLink
-                  className="flex items-center gap-2 hover:opacity-80 transition-opacity whitespace-nowrap"
-                  href="/cart"
-                  data-testid="nav-cart-link"
+                  className="flex items-center hover:opacity-80 transition-opacity"
+                  href="/account"
+                  data-testid="nav-account-link"
+                  aria-label="Hesabım"
                 >
-                  <ShoppingCart className="w-5 h-5" />
-                  <span className="hidden md:inline">Sepetim</span>
+                  <User className="w-6 h-6" />
                 </LocalizedClientLink>
-              }
-            >
-              <CartButton />
-            </Suspense>
+
+                <LocalizedClientLink
+                  className="flex items-center hover:opacity-80 transition-opacity"
+                  href="/account/favorites"
+                  data-testid="nav-favorites-link"
+                  aria-label="Favorilerim"
+                >
+                  <Heart className="w-6 h-6" />
+                </LocalizedClientLink>
+
+                <Suspense
+                  fallback={
+                    <LocalizedClientLink
+                      className="flex items-center hover:opacity-80 transition-opacity"
+                      href="/cart"
+                      data-testid="nav-cart-link"
+                      aria-label="Sepetim"
+                    >
+                      <ShoppingCart className="w-6 h-6" />
+                    </LocalizedClientLink>
+                  }
+                >
+                  <CartButton />
+                </Suspense>
+              </div>
+            </div>
+
+            {/* Bottom Row: Full width Search Bar */}
+            <div className="pb-3">
+              <SearchBar />
+            </div>
           </div>
-        </nav>
+        </div>
       </header>
 
       {/* Categories Navigation */}
