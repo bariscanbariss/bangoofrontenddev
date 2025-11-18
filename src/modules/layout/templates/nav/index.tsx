@@ -80,7 +80,7 @@ export default async function Nav() {
           {/* Mobile & Tablet Layout: Trendyol style */}
           <div className="lg:hidden">
             {/* Top Row: Logo and Icons */}
-            <div className="flex items-center justify-between py-3">
+            <div className="flex items-center justify-between">
               {/* Logo - 7rem height for mobile/tablet */}
               <LocalizedClientLink
                 href="/"
@@ -135,7 +135,7 @@ export default async function Nav() {
               </div>
             </div>
 
-            {/* Bottom Row: Full width Search Bar */}
+            {/* Bottom Row: Full width Search Bar - No padding between */}
             <div className="pb-3">
               <SearchBar />
             </div>
