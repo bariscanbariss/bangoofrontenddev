@@ -28,6 +28,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    unoptimized: true,
+    qualities: [75, 90, 100],
     remotePatterns: [
       {
         protocol: "http",
@@ -44,6 +46,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "admin.bangoocyp.com",
       },
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
