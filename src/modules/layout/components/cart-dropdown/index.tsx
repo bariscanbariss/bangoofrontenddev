@@ -169,7 +169,7 @@ const CartDropdown = ({
                           </div>
                           <DeleteButton
                             id={item.id}
-                            className="mt-1"
+                            className="mt-1 bg-purple-600 hover:bg-purple-700 text-white"
                             data-testid="cart-item-remove-button"
                           >
                             Kaldır
@@ -197,7 +197,7 @@ const CartDropdown = ({
                   </div>
                   <LocalizedClientLink href="/cart" passHref>
                     <Button
-                      className="w-full"
+                      className="w-full bg-purple-600 hover:bg-purple-700"
                       size="large"
                       data-testid="go-to-cart-button"
                     >
@@ -217,7 +217,7 @@ const CartDropdown = ({
                     <LocalizedClientLink href="/store">
                       <>
                         <span className="sr-only">Tüm ürünler sayfasına git</span>
-                        <Button onClick={close}>Ürünleri Keşfet</Button>
+                        <Button onClick={close} className="bg-purple-600 hover:bg-purple-700">Ürünleri Keşfet</Button>
                       </>
                     </LocalizedClientLink>
                   </div>
