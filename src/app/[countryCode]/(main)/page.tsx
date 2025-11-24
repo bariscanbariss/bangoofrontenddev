@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 
+import BangooFeatures from "@modules/home/components/bangoo-features"
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import PopularProductsSlider from "@modules/home/components/popular-products-slider"
@@ -63,6 +64,9 @@ export default async function Home(props: {
       {popularProducts.length > 0 && (
         <PopularProductsSlider products={popularProducts} region={region} />
       )}
+
+      {/* Bangoo Features: Online Payment & Fast Delivery */}
+      <BangooFeatures />
 
       {/* Welcome Section */}
       <div className="content-container py-8">
