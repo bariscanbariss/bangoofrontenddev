@@ -127,6 +127,49 @@ export async function login(_currentState: unknown, formData: FormData) {
   }
 }
 
+export async function loginWithGoogle() {
+  try {
+    const baseUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+
+    // Vercel deployment URL'ini otomatik algıla
+    // VERCEL_URL her deployment için otomatik olarak Vercel tarafından sağlanır
+    let frontendUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000"
+
+    // Eğer VERCEL_URL varsa ve NEXT_PUBLIC_BASE_URL yoksa, Vercel URL'ini kullan
+    if (process.env.VERCEL_URL && !process.env.NEXT_PUBLIC_BASE_URL) {
+      frontendUrl = `https://${process.env.VERCEL_URL}/`
+    }
+
+    // URL sonunda / yoksa ekle
+    if (!frontendUrl.endsWith('/')) {
+      frontendUrl += '/'
+    }
+
+    const callbackUrl = `${frontendUrl}auth/google/callback`
+
+    const googleAuthUrl = `${baseUrl}/auth/customer/google?redirect_uri=${encodeURIComponent(callbackUrl)}`
+
+    return { success: true, url: googleAuthUrl }
+  } catch (error: any) {
+    return { success: false, error: error.toString() }
+  }
+}
+
+export async function handleGoogleCallback(token: string) {
+  try {
+    await setAuthToken(token)
+
+    const customerCacheTag = await getCacheTag("customers")
+    revalidateTag(customerCacheTag)
+
+    await transferCart()
+
+    return { success: true }
+  } catch (error: any) {
+    return { success: false, error: error.toString() }
+  }
+}
+
 export async function signout(countryCode: string) {
   await sdk.auth.logout()
 
