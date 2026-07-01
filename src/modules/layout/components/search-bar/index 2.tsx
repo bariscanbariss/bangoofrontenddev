@@ -1,0 +1,57 @@
+"use client"
+
+import { Search } from "lucide-react"
+import { useRouter, usePathname } from "next/navigation"
+import { useState, useRef, useEffect } from "react"
+
+export default function SearchBar() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setSearchQuery("")
+    setIsOpen(false)
+  }, [pathname])
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      const countryCode = pathname.split("/")[1] || "tr"
+      router.push(`/${countryCode}/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setIsOpen(false)
+    }
+  }
+
+  return (
+    <div className="relative flex-1 min-w-0 max-w-2xl mx-2 sm:mx-4 md:mx-8">
+      <form onSubmit={handleSearch} className="relative" role="search">
+        <label htmlFor="search-input" className="sr-only">Ürün ara</label>
+        <input
+          id="search-input"
+          ref={inputRef}
+          type="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setIsOpen(true)}
+          placeholder="Ara..."
+          className="w-full px-3 py-1.5 sm:py-2 pl-8 sm:pl-10 pr-12 sm:pr-16 rounded-lg border border-gray-300 focus:outline-none focus:border-[#9865e8] focus:ring-2 focus:ring-[#9865e8]/20 transition-all text-gray-900 placeholder:text-gray-500 text-sm sm:text-base"
+          aria-label="Ürün, kategori veya marka ara"
+        />
+        <Search
+          className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 pointer-events-none"
+          aria-hidden="true"
+        />
+        <button
+          type="submit"
+          className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 bg-[#9865e8] text-white px-2 sm:px-4 py-1 rounded-md hover:bg-[#8050d0] transition-colors text-xs sm:text-sm"
+          aria-label="Ara"
+        >
+          Ara
+        </button>
+      </form>
+    </div>
+  )
+}
